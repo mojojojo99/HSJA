@@ -5,12 +5,14 @@ from build_model import ImageModel
 from load_data import ImageData, split_data
 from hsja import hsja
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import sys
 import os
 import pickle
 import argparse
-import scipy
+import scipy.misc
+import imageio
 import itertools
 
 def construct_model_and_data(args):
@@ -94,7 +96,7 @@ def attack(args):
 							init_num_evals = 100)
 
 		image = np.concatenate([sample, np.zeros((32,8,3)), perturbed], axis = 1)
-		scipy.misc.imsave('{}/figs/{}-{}-{}.jpg'.format(data_model, 
+		imageio.imwrite('{}/figs/{}-{}-{}.jpg'.format(data_model, 
 			args.attack_type, args.constraint, i), image)
 
 

@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function 
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import numpy as np
 import os
 from keras.layers import Flatten, Conv2D, MaxPooling2D, Conv2DTranspose, UpSampling2D, Convolution2D, BatchNormalization, Dense, Dropout, Activation, Embedding, Conv1D, Input, GlobalMaxPooling1D, Multiply, Lambda, Permute, GlobalAveragePooling2D 
@@ -10,7 +11,8 @@ from keras.models import Model, Sequential
 from keras.objectives import binary_crossentropy
 from keras.metrics import binary_accuracy as accuracy
 from keras.optimizers import RMSprop
-from keras import backend as K  
+# from keras import backend as K  
+import tensorflow.python.keras.backend as K
 from keras import optimizers
 import math
 
@@ -68,9 +70,8 @@ class ImageModel():
 			if load == True:
 				print('Loading model weights...')
 				self.model.load_weights('{}/models/original.hdf5'.format(
-					self.data_model), by_name=True)
-			elif load != False:
-				self.model.load_weights('{}/models/{}.hdf5'.format(
+					self.data_model), by_name=False)
+			elif load != False: self.model.load_weights('{}/models/{}.hdf5'.format(
 					self.data_model, load), by_name=True)
 
 	def predict(self, x, verbose=0, batch_size = 500, logits = False):
